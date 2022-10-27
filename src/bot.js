@@ -1,12 +1,13 @@
 require('dotenv').config();
 const { Client } = require('discord.js');
 const intentOptions = require('./configs/intentOptions.js');
+const registerEvents = require('./events/registerEvents');
 
-const client = new Client({ intents: intentOptions });
 const token = process.env.TOKEN;
+const client = new Client({ intents: intentOptions });
 
-client.on('ready', () => {
-	console.log(`${client.user.tag} has logged in!`);
-});
+registerEvents(client);
 
 client.login(token);
+
+module.exports = client

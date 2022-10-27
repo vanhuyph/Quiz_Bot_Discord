@@ -25,6 +25,7 @@ const commandFilesCollection = () => {
     return commandsCollection;
 }
 
+// Grab the SlashCommandBuilder to JSON output of each command's data for deployment
 const commandFilesArray = () => {
     for (const file of commandFiles) {
         const command = require(`../commands/${file}`);
