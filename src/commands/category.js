@@ -3,8 +3,8 @@ const axios = require("axios");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("category")
-    .setDescription("all category"),
+    .setName("categories")
+    .setDescription("Display all categories"),
 
   async execute(interaction) {
     const data = await (
@@ -13,15 +13,15 @@ module.exports = {
 
     console.log(data);
     const embedCategory = new EmbedBuilder();
-    embedCategory.setTitle("all category   :smiley: ");
+    embedCategory.setTitle("All categories:");
 
-    let msg = "";
+    let msg = '';
     for (let i = 0; i < data.length; i++) {
-      msg += "\n" + data[i].name;
+      msg += '\n' + data[i].name;
     }
     embedCategory.setDescription(msg);
-
     embedCategory.setTimestamp();
+    
     await interaction.reply({
       embeds: [embedCategory],
       fetchReply: true,
