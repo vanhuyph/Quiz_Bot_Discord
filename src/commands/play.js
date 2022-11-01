@@ -166,7 +166,7 @@ module.exports = {
                     return await interaction.channel.send({ embeds: [resultMsgEmbed] });
                 }
 
-                let usernames;
+                let usernames = '';
                 for (let i = 0; i < userAnswering.length; i++) {
                     const element = userAnswering[i];
                     if (element.answerID === holdingAnswer) {
@@ -174,7 +174,7 @@ module.exports = {
                         usernames += '\n' + element.username;
                     }
                 }
-                usernames === undefined ? usernames = '\nNobody had the correct answer!' : usernames;
+                usernames === '' ? usernames = '\nNobody had the correct answer!' : usernames;
                 resultMsgEmbed.setColor('Red').setDescription(`The good answer was ${answerLetter}: ${correctAnswer}\nUsers with the correct answer:${usernames}`)
 
                 // Edit the message to replace it with disabled buttons and send the result embed
