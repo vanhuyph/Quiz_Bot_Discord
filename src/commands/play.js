@@ -2,6 +2,27 @@ const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, Butt
 const entities = require('entities');
 const axios = require('axios');
 const wait = require('node:timers/promises').setTimeout;
+const { Users } = require('../database/dbObjects.js')
+
+/**
+ * Add score to the user or create the user if he's not present in the db
+ * @param {*} userID the user's ID to add score
+ * @param {*} scoreAmount amount of points to give
+ * @returns the user with the score updated or a new user if 
+ * he wasn't present in the db beforehand
+ */
+async function addScore(userID, scoreAmount) {
+    const user = await Users.findOne({ where: { user_id: userID } });
+   
+	if (user) {
+		user.score += Number(scoreAmount);
+		return user.save();
+	}
+
+	const newUser = await Users.create({ user_id: userID, score: scoreAmount });
+  
+	return newUser;
+}
 
 /***************************************************************************************
 * Author: Jeff
@@ -83,12 +104,24 @@ module.exports = {
             const question = entities.decodeHTML(results.question);
             const correctAnswer = entities.decodeHTML(results.correct_answer);
             const category = entities.decodeHTML(results.category);
+            const difficulty = results.difficulty;
             const choices = [correctAnswer];
             results.incorrect_answers.forEach(element => {
                 choices.push(entities.decodeHTML(element));
             });
             shuffle(choices);
             console.log(correctAnswer);
+
+            let scoreAmount;
+            if (difficulty === 'easy') {
+                scoreAmount = 5;
+            }
+            else if (difficulty === 'normal') {
+                scoreAmount = 10;
+            } 
+            else {
+                scoreAmount = 20;
+            }
 
             // Construct an embed with all the questions data
             const embedQuestion = new EmbedBuilder().setTitle(`Question ${i + 1}:\n${question}`)
@@ -103,7 +136,7 @@ module.exports = {
 
             let holdingAnswer = '';
             if (correctAnswer === choices[0]) {
-                holdingAnswer = 'anwser_A';
+                holdingAnswer = 'answer_A';
             }
             else if (correctAnswer === choices[1]) {
                 holdingAnswer = 'answer_B';
@@ -134,6 +167,7 @@ module.exports = {
             collector.on('collect', async i => {
                 // Check whether the userID property exists in the array or not and if the latter, then add it
                 var index = userAnswering.findIndex(x => x.userID === i.user.id);
+                
                 if (index === -1) {
                     userAnswering.push({ userID: i.user.id, username: i.user.username, messageID: i.message.id, answerID: i.customId });
                 } else {
@@ -153,7 +187,6 @@ module.exports = {
             // Instantiate a new embed for the results
             let resultMsgEmbed = new EmbedBuilder();
             const disabledButtons = disableButtons(buttons, correctAnswer);
-            const userWithGoodAnswers = [];
 
             // Will be executed when the collector completes
             collector.on('end', async collected => {
@@ -170,8 +203,8 @@ module.exports = {
                 for (let i = 0; i < userAnswering.length; i++) {
                     const element = userAnswering[i];
                     if (element.answerID === holdingAnswer) {
-                        userWithGoodAnswers.push(element.username);
-                        usernames += '\n' + element.username;
+                        usernames += `\n${element.username}: +${scoreAmount} points`;
+                        addScore(element.userID, scoreAmount);
                     }
                 }
                 usernames === '' ? usernames = '\nNobody had the correct answer!' : usernames;
