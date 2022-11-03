@@ -11,17 +11,17 @@ const { Users } = require('../database/dbObjects.js')
  * @returns the user with the score updated or a new user if 
  * he wasn't present in the db beforehand
  */
-async function addScore(userID, scoreAmount) {
-    const user = await Users.findOne({ where: { user_id: userID } });
-   
-	if (user) {
-		user.score += Number(scoreAmount);
-		return user.save();
-	}
+async function addScore(userObj, scoreAmount) {
+    const user = await Users.findOne({ where: { user_id: userObj.userID } });
 
-	const newUser = await Users.create({ user_id: userID, score: scoreAmount });
-  
-	return newUser;
+    if (user) {
+        user.score += Number(scoreAmount);
+        return user.save();
+    }
+
+    const newUser = await Users.create({ user_id: userObj.userID, username: userObj.username, score: scoreAmount });
+
+    return newUser;
 }
 
 /***************************************************************************************
@@ -118,7 +118,7 @@ module.exports = {
             }
             else if (difficulty === 'normal') {
                 scoreAmount = 10;
-            } 
+            }
             else {
                 scoreAmount = 20;
             }
@@ -131,7 +131,6 @@ module.exports = {
                     '\n\n 🇧 ' + choices[1] +
                     '\n\n 🇨 ' + choices[2] +
                     '\n\n 🇩 ' + choices[3])
-                .setTimestamp()
                 .setFooter({ text: category + '\nYou have 10s to answer.' });
 
             let holdingAnswer = '';
@@ -167,7 +166,7 @@ module.exports = {
             collector.on('collect', async i => {
                 // Check whether the userID property exists in the array or not and if the latter, then add it
                 var index = userAnswering.findIndex(x => x.userID === i.user.id);
-                
+
                 if (index === -1) {
                     userAnswering.push({ userID: i.user.id, username: i.user.username, messageID: i.message.id, answerID: i.customId });
                 } else {
@@ -204,7 +203,7 @@ module.exports = {
                     const element = userAnswering[i];
                     if (element.answerID === holdingAnswer) {
                         usernames += `\n${element.username}: +${scoreAmount} points`;
-                        addScore(element.userID, scoreAmount);
+                        addScore(element, scoreAmount);
                     }
                 }
                 usernames === '' ? usernames = '\nNobody had the correct answer!' : usernames;
