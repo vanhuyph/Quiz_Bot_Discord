@@ -87,7 +87,7 @@ module.exports = {
     data: new SlashCommandBuilder().setName('play').setDescription('Start a standard multiple choices game of 5 rounds.'),
     async execute(interaction) {
         // API call to get the questions data
-        const data = await (await axios('https://opentdb.com/api.php?amount=1&category=31&type=multiple')).data.results;
+        const data = await (await axios('https://opentdb.com/api.php?amount=5&type=multiple')).data.results;
 
         for (let i = 0; i < data.length; i++) {
             // Results take the following form:
@@ -158,13 +158,11 @@ module.exports = {
             if (!interaction.replied) {
                 message = await interaction.reply({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             } else {
-                // Delay of 15s to let the user answer before sending the next question
-                await wait(15000);
                 message = await interaction.channel.send({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             }
 
             // Add a createMessageComponentCollector to collect all the answers from the user
-            const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 5000 });
+            const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 10000 });
             // Array holding all the users answering to the quiz
             let userAnswering = [];
 
@@ -208,7 +206,7 @@ module.exports = {
                 console.log(`Collected ${collected.size} interactions.`);
                 // Slicing the string to get only the letter (A, B, C or D)
                 const answerLetter = holdingAnswer.slice(7);
-                // If no interactions collected, send the didn't answer embed
+                // If no interactions collected, send the didn't answer embed message
                 if (collected.size === 0) {
                     resultMsgEmbed.setDescription(`The good answer was ${answerLetter}: ${correctAnswer}`)
                     await message.edit({ content: 'Nobody answered!', embeds: [embedQuestion], components: disabledButtons, fetchReply: true })
@@ -233,6 +231,10 @@ module.exports = {
                 await message.edit({ embeds: [embedQuestion], components: disabledButtons, fetchReply: true })
                 return await interaction.channel.send({ embeds: [resultMsgEmbed] });
             });
+
+            // Adding a delay of 15s to allow time in between questions, otherwise the for loop will
+            // quickly fire all the questions at once
+            await wait(15000);
         }
     }
 }
