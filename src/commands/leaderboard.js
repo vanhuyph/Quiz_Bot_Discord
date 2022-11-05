@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, userMention } = require("discord.js");
 const { Users } = require('../database/dbObjects.js')
 
 /**
@@ -27,14 +27,15 @@ module.exports = {
         let points = '';
         for (let i = 0; i < userTop10.length; i++) {
             const user = userTop10[i];
+            const mentionUser = userMention(user.user_id);
             if (i === 0) {
-                usernames += `🥇 ${user.username}\n`;
+                usernames += `🥇 ${mentionUser}\n`;
             } else if (i === 1) {
-                usernames += `🥈 ${user.username}\n`;
+                usernames += `🥈 ${mentionUser}\n`;
             } else if (i === 2) {
-                usernames += `🥉 ${user.username}\n`;
+                usernames += `🥉 ${mentionUser}\n`;
             } else {
-                usernames += `\`${i + 1}\` ${user.username}\n`;
+                usernames += `\`${i + 1}\` ${mentionUser}\n`;
             }
             points += `${user.score}\n`;
         }
