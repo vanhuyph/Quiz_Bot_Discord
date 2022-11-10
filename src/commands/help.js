@@ -15,7 +15,7 @@ module.exports = {
 							label: 'Play command',
 							description: 'All information about the play command',
 							value: 'play',
-							emoji: '❓'
+							emoji: '🎲'
 						},
 						{
 							label: 'Setup command',
