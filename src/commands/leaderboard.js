@@ -6,14 +6,14 @@ const { Users } = require('../database/dbObjects.js')
  * @returns the top 10 users with the most points
  */
 async function searchTop10() {
-    const user = await Users.findAll({
+    const users = await Users.findAll({
         order: [
             ['score', 'DESC']
         ],
         limit: 10
     });
 
-    return user;
+    return users;
 }
 
 module.exports = {
@@ -23,8 +23,14 @@ module.exports = {
     async execute(interaction) {
         const userTop10 = await searchTop10();
         const embedMsg = new EmbedBuilder().setTitle('🏆 Top 10 leaderboard 🏆').setColor('#FF47CA');
+        if (userTop10.length === 0) {
+            embedMsg.setDescription('Nobody is ranked yet... Be the first one!');
+            return await interaction.reply({ embeds: [embedMsg], ephemeral: true });
+        }
+
         let usernames = '';
         let points = '';
+
         for (let i = 0; i < userTop10.length; i++) {
             const user = userTop10[i];
             const mentionUser = userMention(user.user_id);
@@ -39,12 +45,14 @@ module.exports = {
             }
             points += `${user.score}\n`;
         }
+
         embedMsg
             .addFields(
                 { name: 'Users', value: usernames, inline: true },
                 { name: 'Points', value: points, inline: true }
             )
             .setTimestamp();
+
         await interaction.reply({ embeds: [embedMsg], ephemeral: true });
     }
 }
