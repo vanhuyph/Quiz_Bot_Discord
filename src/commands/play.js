@@ -127,19 +127,25 @@ module.exports = {
                     '\n\n 🇩 ' + choices[3])
                 .setFooter({ text: category + '\nYou have 10s to answer.' });
 
+            // Instantiate a new embed for the results that will be used later on
+            const resultMsgEmbed = new EmbedBuilder();
+
             // Set the score amount and the color of the embed based on the question's difficulty
             let scoreAmount;
             if (difficulty === 'easy') {
                 scoreAmount = 5;
                 embedQuestion.setColor('#66ff00')
+                resultMsgEmbed.setColor('#66ff00')
             }
             else if (difficulty === 'medium') {
                 scoreAmount = 10;
                 embedQuestion.setColor('#df8830')
+                resultMsgEmbed.setColor('#df8830')
             }
             else {
                 scoreAmount = 20;
                 embedQuestion.setColor('#e32636')
+                resultMsgEmbed.setColor('#e32636')
             }
 
             // Variable to hold the answer and compare it with the user's answer later on
@@ -191,18 +197,6 @@ module.exports = {
                     await i.update('Somebody answered!');
                 }
             });
-
-            // Instantiate a new embed for the results
-            let resultMsgEmbed = new EmbedBuilder();
-            if (difficulty === 'easy') {
-                resultMsgEmbed.setColor('#66ff00')
-            }
-            else if (difficulty === 'medium') {
-                resultMsgEmbed.setColor('#df8830')
-            }
-            else {
-                resultMsgEmbed.setColor('#e32636')
-            }
 
             const disabledButtons = disableButtons(buttons, correctAnswer);
 
