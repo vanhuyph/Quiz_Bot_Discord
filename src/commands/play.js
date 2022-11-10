@@ -2,6 +2,27 @@ const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, Butt
 const entities = require('entities');
 const axios = require('axios');
 const wait = require('node:timers/promises').setTimeout;
+const { Users } = require('../database/dbObjects.js')
+
+/**
+ * Add score to the user or create the user if he's not present in the db
+ * @param {*} userID the user's ID to add score
+ * @param {*} scoreAmount amount of points to give
+ * @returns the user with the score updated or a new user if 
+ * he wasn't present in the db beforehand
+ */
+async function addScore(userObj, scoreAmount) {
+    const user = await Users.findOne({ where: { user_id: userObj.userID } });
+
+    if (user) {
+        user.score += Number(scoreAmount);
+        return user.save();
+    }
+
+    const newUser = await Users.create({ user_id: userObj.userID, username: userObj.username, score: scoreAmount });
+
+    return newUser;
+}
 
 /***************************************************************************************
 * Author: Jeff
@@ -63,10 +84,10 @@ function disableButtons(buttons, correctAnswer) {
 }
 
 module.exports = {
-    data: new SlashCommandBuilder().setName('play').setDescription('Start a game'),
+    data: new SlashCommandBuilder().setName('play').setDescription('Start a standard multiple choices game of 5 rounds.'),
     async execute(interaction) {
         // API call to get the questions data
-        const data = await (await axios('https://opentdb.com/api.php?amount=2&category=31&type=multiple')).data.results;
+        const data = await (await axios('https://opentdb.com/api.php?amount=5&type=multiple')).data.results;
 
         for (let i = 0; i < data.length; i++) {
             // Results take the following form:
@@ -83,6 +104,7 @@ module.exports = {
             const question = entities.decodeHTML(results.question);
             const correctAnswer = entities.decodeHTML(results.correct_answer);
             const category = entities.decodeHTML(results.category);
+            const difficulty = results.difficulty;
             const choices = [correctAnswer];
             results.incorrect_answers.forEach(element => {
                 choices.push(entities.decodeHTML(element));
@@ -92,18 +114,33 @@ module.exports = {
 
             // Construct an embed with all the questions data
             const embedQuestion = new EmbedBuilder().setTitle(`Question ${i + 1}:\n${question}`)
-            .setDescription(
-                '\n**Choices:**\n' +
-                '\n 🇦 ' + choices[0] +
-                '\n\n 🇧 ' + choices[1] +
-                '\n\n 🇨 ' + choices[2] +
-                '\n\n 🇩 ' + choices[3])
-            .setTimestamp()
-            .setFooter({ text: category + '\nYou have 10s to answer.' });
+                .setDescription(
+                    '\n**Choices:**\n' +
+                    '\n 🇦 ' + choices[0] +
+                    '\n\n 🇧 ' + choices[1] +
+                    '\n\n 🇨 ' + choices[2] +
+                    '\n\n 🇩 ' + choices[3])
+                .setFooter({ text: category + '\nYou have 10s to answer.' });
 
+            // Set the score amount and the color of the embed based on the question's difficulty
+            let scoreAmount;
+            if (difficulty === 'easy') {
+                scoreAmount = 5;
+                embedQuestion.setColor('#66ff00')
+            }
+            else if (difficulty === 'medium') {
+                scoreAmount = 10;
+                embedQuestion.setColor('#df8830')
+            }
+            else {
+                scoreAmount = 20;
+                embedQuestion.setColor('#e32636')
+            }
+
+            // Variable to hold the answer and compare it with the user's answer later on
             let holdingAnswer = '';
             if (correctAnswer === choices[0]) {
-                holdingAnswer = 'anwser_A';
+                holdingAnswer = 'answer_A';
             }
             else if (correctAnswer === choices[1]) {
                 holdingAnswer = 'answer_B';
@@ -117,54 +154,87 @@ module.exports = {
 
             const buttons = buildButtons(choices);
             let message;
-            
+
             if (!interaction.replied) {
                 message = await interaction.reply({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             } else {
-                // Delay of 15s to let the user answer before sending the next question
-                await wait(15000);
                 message = await interaction.channel.send({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             }
 
             // Add a createMessageComponentCollector to collect all the answers from the user
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 10000 });
+            // Array holding all the users answering to the quiz
+            let userAnswering = [];
 
             // Start to collect the answers
             collector.on('collect', async i => {
-                // Check if the user is the same as the one who did the interaction
-                if (i.user.id === interaction.user.id) {
-                    let txt;
-                    txt = i.customId.replace('_', ' ');
-                    await i.update(`You chose ` + txt);
+                // Check whether the userID property exists in the array or not and if the latter, then add it
+                var index = userAnswering.findIndex(x => x.userID === i.user.id);
+
+                if (index === -1) {
+                    userAnswering.push({ userID: i.user.id, username: i.user.username, messageID: i.message.id, answerID: i.customId });
                 } else {
-                    await i.reply({ content: `These buttons aren't for you!`, ephemeral: true });
+                    // Allow to change the user's answer without modifying the whole object
+                    let newArr = userAnswering.map(u => u.userID === i.user.id ? { ...u, answerID: i.customId } : u);
+                    // Make a copy of newArr array using the SPREAD operator
+                    userAnswering = [...newArr];
+                }
+
+                if (userAnswering.length > 1) {
+                    await i.update(`${userAnswering.length} users answered!`);
+                } else {
+                    await i.update('Somebody answered!');
                 }
             });
 
             // Instantiate a new embed for the results
             let resultMsgEmbed = new EmbedBuilder();
+            if (difficulty === 'easy') {
+                resultMsgEmbed.setColor('#66ff00')
+            }
+            else if (difficulty === 'medium') {
+                resultMsgEmbed.setColor('#df8830')
+            }
+            else {
+                resultMsgEmbed.setColor('#e32636')
+            }
+
             const disabledButtons = disableButtons(buttons, correctAnswer);
 
             // Will be executed when the collector completes
             collector.on('end', async collected => {
                 console.log(`Collected ${collected.size} interactions.`);
-                // If no interactions collected, send the didn't answer embed
+                // Slicing the string to get only the letter (A, B, C or D)
+                const answerLetter = holdingAnswer.slice(7);
+                // If no interactions collected, send the didn't answer embed message
                 if (collected.size === 0) {
-                    resultMsgEmbed.setColor('Red').setDescription('The good answer was: ' + correctAnswer)
-                    await message.edit({ content: 'You didn\'t answer.', embeds: [embedQuestion], components: disabledButtons, fetchReply: true })
+                    resultMsgEmbed.setDescription(`The good answer was ${answerLetter}: ${correctAnswer}`)
+                    await message.edit({ content: 'Nobody answered!', embeds: [embedQuestion], components: disabledButtons, fetchReply: true })
                     return await interaction.channel.send({ embeds: [resultMsgEmbed] });
                 }
-                // Set the embed's color based on the last user's answer provided
-                if (holdingAnswer === collected.last().customId) {
-                    resultMsgEmbed.setColor('Green').setDescription('Correct! It was indeed ' + correctAnswer)
-                } else {
-                    resultMsgEmbed.setColor('Red').setDescription('You got it wrong, it was: ' + correctAnswer)
+
+                // String to hold all the usernames who answered correctly
+                let usernames = '';
+                for (let i = 0; i < userAnswering.length; i++) {
+                    const element = userAnswering[i];
+                    // If the last answer of the user correspond to the correct answer,
+                    // concatenate the string with the username + amount of points gained and call the addScore function
+                    if (element.answerID === holdingAnswer) {
+                        usernames += `\n${element.username}: +${scoreAmount} points`;
+                        addScore(element, scoreAmount);
+                    }
                 }
+                usernames === '' ? usernames = '\nNobody had the correct answer!' : usernames;
+                resultMsgEmbed.setDescription(`The good answer was ${answerLetter}: ${correctAnswer}\nUsers with the correct answer:${usernames}`)
 
                 // Edit the message to replace it with disabled buttons and send the result embed
                 await message.edit({ embeds: [embedQuestion], components: disabledButtons, fetchReply: true })
                 return await interaction.channel.send({ embeds: [resultMsgEmbed] });
             });
+
+            // Adding a delay of 15s to allow time in between questions, otherwise the for loop will
+            // quickly fire all the questions at once
+            await wait(15000);
         }
     }
 }

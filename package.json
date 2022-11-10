@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/bot.js",
     "dev": "nodemon ./src/bot.js",
-    "deploy-commands": "node ./src/deploy-commands.js"
+    "deploy-commands": "node ./src/deploy-commands.js",
+    "forceInitdb": "node ./src/database/dbInit.js --force",
+    "initdb": "node ./src/database/dbInit.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +20,11 @@
     "dotenv": "^16.0.3",
     "entities": "^4.4.0",
     "node-fetch": "^2.6.7",
+<<<<<<< HEAD
     "nodemon": "^2.0.20"
+=======
+    "sequelize": "^6.25.3",
+    "sqlite3": "^5.1.2"
+>>>>>>> df9d4fd683c896fd230e11246dc5cf488e448a26
   }
 }
