@@ -84,7 +84,7 @@ function disableButtons(buttons, correctAnswer) {
 }
 
 module.exports = {
-    data: new SlashCommandBuilder().setName('play').setDescription('Start a standard multiple choices game of 5 rounds.'),
+    data: new SlashCommandBuilder().setName('play').setDescription('Start a standard multiple choice game of 5 rounds.'),
     async execute(interaction) {
         // API call to get the questions data
         const data = await (await axios('https://opentdb.com/api.php?amount=5&type=multiple')).data.results;

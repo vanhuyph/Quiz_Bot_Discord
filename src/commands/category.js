@@ -3,7 +3,7 @@ const axios = require("axios");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("categories")
+    .setName("category")
     .setDescription("Display all categories."),
 
   async execute(interaction) {
