@@ -89,7 +89,7 @@ module.exports = {
         // API call to get the questions data
         let data;
         try {
-            data = await (await axios('https://opentdb.com/api.php?amount=5&type=multiple')).data.results;
+            data = await (await axios('https://opentdb.com/api.php?amount=1&type=multiple')).data.results;
         } catch (error) {
             console.log(error);
             return await interaction.channel.send({ content: 'Something went wrong while trying to retrieve the questions. Try again!' });
@@ -125,7 +125,7 @@ module.exports = {
                     '\n\n 🇧 ' + choices[1] +
                     '\n\n 🇨 ' + choices[2] +
                     '\n\n 🇩 ' + choices[3])
-                .setFooter({ text: category + '\nYou have 10s to answer.' });
+                .setFooter({ text: 'Category: ' + category + '\nYou have 10s to answer.' });
 
             // Instantiate a new embed for the results that will be used later on
             const resultMsgEmbed = new EmbedBuilder();
@@ -235,5 +235,11 @@ module.exports = {
             // quickly fire all the questions at once
             await wait(15000);
         }
+
+        // Little embed to announce the last round ended
+        const endEmbed = new EmbedBuilder()
+        .setDescription('It was the last round. You can check your score points with \`/score\` or display the leaderboard with \`/lb\`.')
+        .setColor('#4f46e5 ');
+        return await interaction.channel.send({ embeds: [endEmbed] });
     }
 }
