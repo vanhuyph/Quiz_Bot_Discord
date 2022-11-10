@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
-		.setDescription('Display a select menu about Quizobot\'s commands'),
+		.setDescription('Display a select menu about Quizobot\'s commands.'),
 	async execute(interaction) {
 		const row = new ActionRowBuilder()
 			.addComponents(
