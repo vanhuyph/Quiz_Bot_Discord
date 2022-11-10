@@ -39,6 +39,8 @@ module.exports = {
 
 		const playEmbed = new EmbedBuilder().setDescription('You can start a quiz game of 10 rounds with the /play command.');
 		const setupEmbed = new EmbedBuilder().setDescription('You can customize the quiz with the /setup command.');	
+		const testEmbed = new EmbedBuilder().setDescription('You can know if the bot works / ping.');	
+		const informationupEmbed = new EmbedBuilder().setDescription('You can have more information about the command /help .');	
 		
 		const message = await interaction.reply({ content: 'Select one option below to get information', components: [row], ephemeral: true });
 		const collector = message.createMessageComponentCollector({ componentType: ComponentType.SelectMenu });
@@ -50,6 +52,12 @@ module.exports = {
 			}
 			if (selected === 'setup') {
 				await interaction.followUp({ embeds: [setupEmbed], ephemeral: true });
+			}
+			if (selected === 'test') {
+				await interaction.followUp({ embeds: [testEmbed], ephemeral: true });
+			}
+			if (selected === 'information') {
+				await interaction.followUp({ embeds: [informationupEmbed], ephemeral: true });
 			}
 		});
 
