@@ -1,87 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ComponentType } = require('discord.js');
+const { shuffle, buildButtons, disableButtons, addScore } = require('../utils/helperFunctions.js');
 const entities = require('entities');
 const axios = require('axios');
 const wait = require('node:timers/promises').setTimeout;
-const { Users } = require('../database/dbObjects.js')
-
-/**
- * Add score to the user or create the user if he's not present in the db
- * @param {*} userID the user's ID to add score
- * @param {*} scoreAmount amount of points to give
- * @returns the user with the score updated or a new user if 
- * he wasn't present in the db beforehand
- */
-async function addScore(userObj, scoreAmount) {
-    const user = await Users.findOne({ where: { user_id: userObj.userID } });
-
-    if (user) {
-        user.score += Number(scoreAmount);
-        return user.save();
-    }
-
-    const newUser = await Users.create({ user_id: userObj.userID, username: userObj.username, score: scoreAmount });
-
-    return newUser;
-}
-
-/***************************************************************************************
-* Author: Jeff
-* Availability: https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
-*
-***************************************************************************************/
-function shuffle(array) {
-    var i, j, temporaryValue;
-    for (i = array.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        temporaryValue = array[i];
-        array[i] = array[j];
-        array[j] = temporaryValue;
-    }
-    return array;
-}
-
-/**
- * Function to help build the answer buttons
- * @param {*} answers the answers to build the buttons for 
- * @returns an array with the built buttons
- */
-function buildButtons(answers) {
-    let buttons = new ActionRowBuilder();
-    const letters = ['A', 'B', 'C', 'D']
-    for (let i = 0; i < answers.length; i++) {
-        let style, text;
-        text = `${letters[i]}: ${answers[i]}`;
-        style = ButtonStyle.Secondary;
-
-        buttons.addComponents(
-            new ButtonBuilder()
-                .setCustomId("answer_" + letters[i])
-                .setLabel(text)
-                .setStyle(style)
-        );
-    }
-    return [buttons];
-}
-
-/**
- * Function to disable the answer buttons and 
- * set the color to the correct answer
- * @param {*} buttons the buttons to disable
- * @param {*} correctAnswer the answer to set the color
- * @returns an array with the disabled buttons
- */
-function disableButtons(buttons, correctAnswer) {
-    let disabledButtons = new ActionRowBuilder();
-    const length = buttons[0].components.length;
-    const letters = ['A', 'B', 'C', 'D']
-    for (let i = 0; i < length; i++) {
-        if (buttons[0].components[i].data.label === `${letters[i]}: ${correctAnswer}`) {
-            buttons[0].components[i].setStyle(ButtonStyle.Success);
-        }
-        disabledButtons.addComponents(buttons[0].components[i].setDisabled(true));
-    }
-    return [disabledButtons]
-}
 
 module.exports = {
     data: new SlashCommandBuilder().setName('play').setDescription('Start a standard multiple choice game of 5 rounds.'),
