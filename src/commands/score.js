@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, codeBlock } = require("discord.js");
+const { SlashCommandBuilder, codeBlock } = require('discord.js');
 const { Users } = require('../database/dbObjects.js')
 
 /**
@@ -23,7 +23,7 @@ module.exports = {
     async execute(interaction) {
         const userScore = await displayScore(interaction.user.id);
         return interaction.reply({
-            content: codeBlock(`You currently have ${userScore} points.`), 
+            content: codeBlock(`You currently have ${userScore} points.`),
             ephemeral: true
         });
     }

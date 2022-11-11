@@ -3,14 +3,14 @@ const { categoriesCollection } = require('../utils/helperFunctions.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("category")
-    .setDescription("Display all categories."),
+    .setName('category')
+    .setDescription('Display all categories.'),
   async execute(interaction) {
     // Deferring the reply to allow the application fetching all the requested data
     // otherwise the application will not respond in time
     await interaction.deferReply();
     const categories = await categoriesCollection();
-    const embedCategory = new EmbedBuilder().setTitle("📃 All categories 📃").setTimestamp();
+    const embedCategory = new EmbedBuilder().setTitle('📃 All categories 📃').setTimestamp();
 
     let msg = '';
     for (let i = 0; i < categories.size; i++) {

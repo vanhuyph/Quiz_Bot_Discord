@@ -75,7 +75,7 @@ function shuffle(array) {
 
         buttons.addComponents(
             new ButtonBuilder()
-                .setCustomId("answer_" + letters[i])
+                .setCustomId('answer_' + letters[i])
                 .setLabel(text)
                 .setStyle(style)
         );
