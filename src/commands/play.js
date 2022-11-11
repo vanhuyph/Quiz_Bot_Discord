@@ -9,6 +9,10 @@ module.exports = {
         .setName('play')
         .setDescription('Start a standard multiple choice game of 5 rounds.'),
     async execute(interaction) {
+        // Deferring the reply to allow the application fetching all the requested data
+        // otherwise the application will not respond in time
+        await interaction.deferReply();
+
         // API call to get the questions data
         let data;
         try {
@@ -91,7 +95,8 @@ module.exports = {
             let message;
 
             if (!interaction.replied) {
-                message = await interaction.reply({ embeds: [embedQuestion], components: buttons, fetchReply: true });
+                // Need to edit the reply after deferring otherwise the bot's message will be stuck
+                message = await interaction.editReply({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             }
             else {
                 message = await interaction.channel.send({ embeds: [embedQuestion], components: buttons, fetchReply: true });

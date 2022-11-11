@@ -18,6 +18,7 @@ module.exports = {
     }
     embedCategory.setDescription(msg);
 
+    // Need to edit the reply after deferring otherwise the bot's message will be stuck
     await interaction.editReply({ embeds: [embedCategory], fetchReply: true, ephemeral: true });
   }
 }

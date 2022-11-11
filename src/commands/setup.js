@@ -141,6 +141,7 @@ module.exports = {
             let message;
 
             if (!interaction.replied) {
+                // Need to edit the reply after deferring otherwise the bot's message will be stuck
                 message = await interaction.editReply({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             } 
             else {
