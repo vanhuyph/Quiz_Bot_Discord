@@ -65,7 +65,7 @@ module.exports = {
             data = await (await axios(baseURL)).data.results;
         } catch (error) {
             console.log(error);
-            return await interaction.channel.send({ content: 'Something went wrong while trying to retrieve the questions. Try again!' });
+            return await interaction.channel.send({ content: 'Something went wrong while trying to retrieve the questions... Please try again later!' });
         }
 
         for (let i = 0; i < data.length; i++) {
@@ -142,7 +142,8 @@ module.exports = {
 
             if (!interaction.replied) {
                 message = await interaction.editReply({ embeds: [embedQuestion], components: buttons, fetchReply: true });
-            } else {
+            } 
+            else {
                 message = await interaction.channel.send({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             }
 

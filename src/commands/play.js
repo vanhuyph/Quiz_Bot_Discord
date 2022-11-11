@@ -5,7 +5,9 @@ const axios = require('axios');
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
-    data: new SlashCommandBuilder().setName('play').setDescription('Start a standard multiple choice game of 5 rounds.'),
+    data: new SlashCommandBuilder()
+        .setName('play')
+        .setDescription('Start a standard multiple choice game of 5 rounds.'),
     async execute(interaction) {
         // API call to get the questions data
         let data;
@@ -13,8 +15,9 @@ module.exports = {
             data = await (await axios('https://opentdb.com/api.php?amount=1&type=multiple')).data.results;
         } catch (error) {
             console.log(error);
-            return await interaction.channel.send({ content: 'Something went wrong while trying to retrieve the questions. Try again!' });
+            return await interaction.channel.send({ content: 'Something went wrong while trying to retrieve the questions... Please try again later!' });
         }
+
         for (let i = 0; i < data.length; i++) {
             // Results take the following form:
             // {
@@ -50,9 +53,9 @@ module.exports = {
 
             // Instantiate a new embed for the results that will be used later on
             const resultMsgEmbed = new EmbedBuilder();
+            let scoreAmount;
 
             // Set the score amount and the color of the embed based on the question's difficulty
-            let scoreAmount;
             if (difficulty === 'easy') {
                 scoreAmount = 5;
                 embedQuestion.setColor('#66ff00')
@@ -89,12 +92,14 @@ module.exports = {
 
             if (!interaction.replied) {
                 message = await interaction.reply({ embeds: [embedQuestion], components: buttons, fetchReply: true });
-            } else {
+            }
+            else {
                 message = await interaction.channel.send({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             }
 
             // Add a createMessageComponentCollector to collect all the answers from the user
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 10000 });
+
             // Array holding all the users answering to the quiz
             let userAnswering = [];
 
@@ -114,7 +119,8 @@ module.exports = {
 
                 if (userAnswering.length > 1) {
                     await i.update(`${userAnswering.length} users answered!`);
-                } else {
+                }
+                else {
                     await i.update('Somebody answered!');
                 }
             });
@@ -159,8 +165,8 @@ module.exports = {
 
         // Little embed to announce the last round ended
         const endEmbed = new EmbedBuilder()
-        .setDescription('It was the last round. You can check your score points with \`/score\` or display the leaderboard with \`/lb\`.')
-        .setColor('#4f46e5 ');
+            .setDescription('It was the last round. You can check your score points with \`/score\` or display the leaderboard with \`/lb\`.')
+            .setColor('#4f46e5 ');
         return await interaction.channel.send({ embeds: [endEmbed] });
     }
 }
