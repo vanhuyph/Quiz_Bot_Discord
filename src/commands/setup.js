@@ -77,6 +77,7 @@ module.exports = {
             const difficulty = results.difficulty;
             const type = results.type;
 
+            // Array that will be stocking the different choices
             let choices = [];
 
             // Construct an embed with all the questions data
@@ -148,7 +149,8 @@ module.exports = {
                 message = await interaction.channel.send({ embeds: [embedQuestion], components: buttons, fetchReply: true });
             }
 
-            // Add a createMessageComponentCollector to collect all the answers from the user
+            // Add a createMessageComponentCollector to collect the user's interactions 
+            // (in this case when clicking on a button in a message)
             const collector = message.createMessageComponentCollector({ componentType: ComponentType.Button, time: 10000 });
 
             // Array holding all the users answering to the quiz
@@ -157,11 +159,12 @@ module.exports = {
             // Start to collect the answers
             collector.on('collect', async i => {
                 // Check whether the userID property exists in the array or not and if the latter, then add it
-                var index = userAnswering.findIndex(x => x.userID === i.user.id);
+                const index = userAnswering.findIndex(x => x.userID === i.user.id);
 
                 if (index === -1) {
                     userAnswering.push({ userID: i.user.id, username: i.user.username, messageID: i.message.id, answerID: i.customId });
-                } else {
+                } 
+                else {
                     // Allow to change the user's answer without modifying the whole object
                     let newArr = userAnswering.map(u => u.userID === i.user.id ? { ...u, answerID: i.customId } : u);
                     // Make a copy of newArr array using the SPREAD operator
@@ -194,7 +197,7 @@ module.exports = {
                 let usernames = '';
                 for (let i = 0; i < userAnswering.length; i++) {
                     const element = userAnswering[i];
-                    // If the last answer of the user correspond to the correct answer,
+                    // If the last answer provided by the user correspond to the correct answer,
                     // concatenate the string with the username + amount of points gained and call the addScore function
                     if (element.answerID === holdingAnswer) {
                         usernames += `\n${element.username}: +${scoreAmount} points`;
@@ -202,7 +205,7 @@ module.exports = {
                     }
                 }
                 usernames === '' ? usernames = '\nNobody had the correct answer!' : usernames;
-                resultMsgEmbed.setDescription(`The good answer was ${answerLetter}: ${correctAnswer}\nUsers with the correct answer:${usernames}`)
+                resultMsgEmbed.setDescription(`The good answer was ${answerLetter}: ${correctAnswer}\n\nUsers with the correct answer:${usernames}`)
 
                 // Edit the message to replace it with disabled buttons and send the result embed
                 await message.edit({ embeds: [embedQuestion], components: disabledButtons, fetchReply: true })

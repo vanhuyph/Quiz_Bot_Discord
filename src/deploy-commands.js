@@ -4,7 +4,7 @@ const { commandFilesArray } = require('./utils/loadCommands.js');
 
 const token = process.env.TOKEN;
 const clientId = process.env.CLIENT_ID;
-// For development and testing in own personal server
+// For development and testing purposes
 // const guildId = process.env.GUILD_ID;
 
 const commands = commandFilesArray();

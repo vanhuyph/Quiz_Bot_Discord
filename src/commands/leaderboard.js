@@ -28,19 +28,24 @@ module.exports = {
             return await interaction.reply({ embeds: [embedMsg], ephemeral: true });
         }
 
+        // Variables to concatenate the user and his points
         let usernames = '';
         let points = '';
 
         for (let i = 0; i < userTop10.length; i++) {
             const user = userTop10[i];
+            // Mentioning the @user based on his ID
             const mentionUser = userMention(user.user_id);
             if (i === 0) {
                 usernames += `🥇 ${mentionUser}\n`;
-            } else if (i === 1) {
+            }
+            else if (i === 1) {
                 usernames += `🥈 ${mentionUser}\n`;
-            } else if (i === 2) {
+            }
+            else if (i === 2) {
                 usernames += `🥉 ${mentionUser}\n`;
-            } else {
+            }
+            else {
                 usernames += `\`${i + 1}\` ${mentionUser}\n`;
             }
             points += `${user.score}\n`;

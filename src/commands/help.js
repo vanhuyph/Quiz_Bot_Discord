@@ -47,12 +47,19 @@ module.exports = {
 		const msgEmbed = new EmbedBuilder().setColor('#55ddcc');
 
 		const message = await interaction.reply({ content: 'Select one option below to get its information', components: [row], ephemeral: true });
+
+		// Add a createMessageComponentCollector to collect the user's interactions 
+		// (in this case when selecting an option in the select menu)
 		const collector = message.createMessageComponentCollector({ componentType: ComponentType.SelectMenu });
 		collector.on('collect', async i => {
+			// The user selected choice
 			const selected = i.values[0];
 
 			// Deferring the update so we don't get interaction failed
 			await i.deferUpdate();
+
+			// Set a different description based on the user selected choice
+			// and send a followUp to the interaction
 			switch (selected) {
 				case 'play':
 					msgEmbed.setDescription('You can start a multiple choice quiz game of 5 rounds with \`/play\`.');
@@ -77,6 +84,6 @@ module.exports = {
 				default:
 					break;
 			}
-		});
-	},
-};
+		})
+	}
+}
