@@ -7,10 +7,10 @@ With the help of [OpenTDB](https://opentdb.com/), QuizoBot provides you over 4,0
 TODO
 
 ## Contents
-* [How to install](#how-to-install)
+* [How to install](#how-to-install-computer)
 * [Commands availabe](#commands-available)
-* [Reused code source links](#reused-code-source-links)
-* [Contributors](#contributors)
+* [Reused code source links](#reused-code-source-links-sparkling_heart)
+* [Contributors](#contributors-star2)
 
 ## How to install :computer:
 **Creating a Discord bot account**
