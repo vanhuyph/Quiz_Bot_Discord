@@ -1,7 +1,7 @@
 {
-  "name": "bot_discord",
+  "name": "quizobot_discord",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Discord bot bringing to your server quiz games with over 4,000 questions and 24 categories thanks to OpenTDB.",
   "main": "./src/bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "initdb": "node ./src/database/dbInit.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "DIDI Abdenour, LEKEU Cyprien, PHAM Van-Huy, PRONCE Alexandre",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.1.3",
