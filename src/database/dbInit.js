@@ -16,6 +16,6 @@ require('../models/Users.js')(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes('--force');
 
-sequelize.sync({ force }).then(async() => {
+sequelize.sync({ force }).then(async () => {
 	console.log('Database is ready');
 }).catch(console.error);

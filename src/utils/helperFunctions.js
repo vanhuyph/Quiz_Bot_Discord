@@ -18,7 +18,7 @@ const categoriesCollection = async () => {
     for (let obj of data) {
         collection.set(obj.id, obj.name);
     }
-    
+
     return collection;
 }
 
@@ -29,7 +29,7 @@ const categoriesCollection = async () => {
  * @returns the user with the score updated or a new user if
  * he wasn't present in the db beforehand
  */
- async function addScore(userObj, scoreAmount) {
+async function addScore(userObj, scoreAmount) {
     const user = await Users.findOne({ where: { user_id: userObj.userID } });
 
     if (user) {
@@ -46,7 +46,7 @@ const categoriesCollection = async () => {
  * Retrieve all users from the DB
  * @returns all users found
  */
- async function getAllUsers() {
+async function getAllUsers() {
     const users = await Users.findAll();
 
     return users;
@@ -75,7 +75,7 @@ function shuffle(array) {
  * @param {*} choices the choices with which we build the buttons 
  * @returns an array with the built buttons
  */
- function buildButtons(choices) {
+function buildButtons(choices) {
     let buttons = new ActionRowBuilder();
     const letters = ['A', 'B', 'C', 'D']
     for (let i = 0; i < choices.length; i++) {

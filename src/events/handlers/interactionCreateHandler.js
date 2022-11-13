@@ -7,7 +7,7 @@ const commands = commandFilesCollection();
 *
 ***************************************************************************************/
 module.exports = async (interaction) => {
-    if (!interaction.isChatInputCommand() ) return;
+    if (!interaction.isChatInputCommand()) return;
     // Get the matching command from the commands Collection based on the interaction.commandName 
     const command = commands.get(interaction.commandName);
 

@@ -120,7 +120,7 @@ module.exports = {
 
                 if (index === -1) {
                     userAnswering.push({ userID: i.user.id, username: i.user.username, messageID: i.message.id, answerID: i.customId });
-                } 
+                }
                 else {
                     // Allow to change the user's answer without modifying the whole object
                     let newArr = userAnswering.map(u => u.userID === i.user.id ? { ...u, answerID: i.customId } : u);
