@@ -42,6 +42,16 @@ const categoriesCollection = async () => {
     return newUser;
 }
 
+/**
+ * Retrieve all users from the DB
+ * @returns all users found
+ */
+ async function getAllUsers() {
+    const users = await Users.findAll();
+
+    return users;
+}
+
 /***************************************************************************************
 * Author: Jeff
 * Availability: https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
@@ -106,4 +116,4 @@ function disableButtons(buttons, correctAnswer) {
     return [disabledButtons]
 }
 
-module.exports = { categoriesCollection, shuffle, buildButtons, disableButtons, addScore } 
+module.exports = { categoriesCollection, addScore, getAllUsers, shuffle, buildButtons, disableButtons } 

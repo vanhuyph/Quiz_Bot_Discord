@@ -1,15 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, userMention } = require('discord.js');
-const { Users } = require('../database/dbObjects.js')
-
-/**
- * Retrieve all users from the DB
- * @returns all users found
- */
-async function getAllUsers() {
-    const users = await Users.findAll();
-
-    return users;
-}
+const { getAllUsers } = require('../utils/helperFunctions.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
