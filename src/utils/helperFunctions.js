@@ -52,6 +52,21 @@ async function getAllUsers() {
     return users;
 }
 
+/**
+ * Display the points of the user
+ * @param {*} userID the user's ID to display points
+ * @returns the points of the user or 0
+ */
+ async function displayScore(userID) {
+    const user = await Users.findOne({ where: { user_id: userID } });
+
+    if (user) {
+        return user.score;
+    }
+
+    return 0;
+}
+
 /***************************************************************************************
 * Author: Jeff
 * Availability: https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
@@ -116,4 +131,4 @@ function disableButtons(buttons, correctAnswer) {
     return [disabledButtons]
 }
 
-module.exports = { categoriesCollection, addScore, getAllUsers, shuffle, buildButtons, disableButtons } 
+module.exports = { categoriesCollection, addScore, getAllUsers, displayScore, shuffle, buildButtons, disableButtons } 

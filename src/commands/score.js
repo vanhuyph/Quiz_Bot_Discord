@@ -1,20 +1,5 @@
 const { SlashCommandBuilder, codeBlock } = require('discord.js');
-const { Users } = require('../database/dbObjects.js')
-
-/**
- * Display the points of the user
- * @param {*} userID the user's ID to display points
- * @returns the points of the user or 0
- */
-async function displayScore(userID) {
-    const user = await Users.findOne({ where: { user_id: userID } });
-
-    if (user) {
-        return user.score;
-    }
-
-    return 0;
-}
+const { displayScore } = require('../utils/helperFunctions.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
