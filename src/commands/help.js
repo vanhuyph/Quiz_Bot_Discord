@@ -78,7 +78,7 @@ module.exports = {
 					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
 					break;
 				case 'leaderboard':
-					msgEmbed.setDescription('Display the leaderboard with \`/lb\`.');
+					msgEmbed.setDescription('Display the top 10 leaderboard with \`/lb\`.');
 					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
 					break;
 				default:

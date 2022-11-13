@@ -16,7 +16,7 @@ module.exports = {
         // API call to get the questions data
         let data;
         try {
-            data = await (await axios('https://opentdb.com/api.php?amount=1&type=multiple')).data.results;
+            data = await (await axios('https://opentdb.com/api.php?amount=3&type=multiple')).data.results;
         } catch (error) {
             console.log(error);
             return await interaction.channel.send({ content: 'Something went wrong while trying to retrieve the questions... Please try again later!' });
@@ -51,16 +51,11 @@ module.exports = {
 
             // Construct an embed with all the questions data
             const embedQuestion = new EmbedBuilder().setTitle(`Question ${i + 1}:\n${question}`)
-                .setDescription(
-                    '\n**Choices:**\n' +
-                    '\n 🇦 ' + choices[0] +
-                    '\n\n 🇧 ' + choices[1] +
-                    '\n\n 🇨 ' + choices[2] +
-                    '\n\n 🇩 ' + choices[3])
-                .setFooter({ text: 'Category: ' + category + '\nYou have 10s to answer.' });
+                .setThumbnail('https://imgur.com/xkCtTxx.png')
+                .setFooter({ text: '⏳ You have 10s to answer.' });
 
             // Instantiate a new embed for the results that will be used later on
-            const resultMsgEmbed = new EmbedBuilder();
+            const resultMsgEmbed = new EmbedBuilder().setFooter({ text: 'Let me grab the next question...' });
             let scoreAmount;
 
             // Set the score amount and the color of the embed based on the question's difficulty
@@ -79,6 +74,14 @@ module.exports = {
                 embedQuestion.setColor('#e32636')
                 resultMsgEmbed.setColor('#e32636')
             }
+
+            let capitalizedDifficulty = difficulty.charAt(0).toUpperCase() + difficulty.slice(1)
+            embedQuestion.addFields(
+                { name: '\u200B', value: '\u200B' },
+                { name: 'Difficulty', value: `${capitalizedDifficulty}`, inline: true },
+                { name: 'Points given', value: `${scoreAmount}`, inline: true },
+                { name: 'Category', value: `${category}`, inline: true }
+            )
 
             // Variable to hold the answer and compare it with the user's answer later on
             let holdingAnswer = '';
@@ -141,7 +144,7 @@ module.exports = {
             // Will be executed when the collector completes
             collector.on('end', async collected => {
                 console.log(`Collected ${collected.size} interactions.`);
-                // Slicing the string to get only the letter (A, B, C or D)
+                // Slicing the string to only get the letter (A, B, C or D)
                 const answerLetter = holdingAnswer.slice(7);
                 // If no interactions collected, send the didn't answer embed message
                 if (collected.size === 0) {
