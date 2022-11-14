@@ -1,3 +1,16 @@
+<h1 align="center">
+  QuizoBot
+</h1>
+<p align="center">
+  <a href="https://github.com/vanhuyph/QuizoBot_Discord">
+    <img src="https://imgur.com/xkCtTxx.png" alt="quizobot_logo" width="170">
+  </a>
+</p>
+<h4 align="center">
+  A Discord trivia bot with over 4,000 questions and multiple commands available. Built with <a href="https://nodejs.org/en/">Node.js</a>.
+</h4>
+<br>
+
 # Discord QuizoBot :robot:
 QuizoBot is a Discord bot bringing to your server a fun multiplayer quiz game. You have the option of playing by yourself but you can also play with the other members of your Discord server and grind the ranks thanks to the leaderboard implemented by the bot.
 
@@ -8,7 +21,7 @@ TODO
 
 ## Contents
 * [How to install](#how-to-install-computer)
-* [Commands availabe](#commands-available)
+* [Commands availabe](#commands-available-game_die)
 * [Reused code source links](#reused-code-source-links-sparkling_heart)
 * [Contributors](#contributors-star2)
 
@@ -16,20 +29,20 @@ TODO
 **Creating a Discord bot account**
 1. Log your Discord account on the [Discord developer portal](https://discord.com/developers/applications) and click on the "New Application" button.
 2. Provide a name to your bot and click on the "Create" button.
-3. In the sidebar, click on "Bot" and then click on the "Add Bot" button on the right.
-4. Now, you'll need your bot's password. Under "Token", press on the "Reset Token" button, copy your token and then keep it somewhere safe. Don't worry, if you lose your bot's token you'll still have the ability to reset your token again.
+3. On the left sidebar, click on "Bot" and then click on the "Add Bot" button on the right.
+4. Now, you'll need your bot's password. Under "Token", press on the "Reset Token" button, copy your token and then keep it somewhere safe. Don't worry, if you lose your bot's token you'll still have the ability to reset your token again which will invalidate the previous one.
 5. On the same page, under the "Privileged Gateway Intents" section, enable the "MESSAGE CONTENT INTENT" option. It'll be needed when running the bot.
-6. Grab the link below and paste it into your browser while replacing "YOUR_CLIENT_ID_HERE" with yours. It's available in the sidebar OAuth2 -> General -> Client information. Finally, select the server where you want your bot to appear.
+6. Grab the link below and paste it into your browser while replacing "YOUR_CLIENT_ID_HERE" with yours. Your client ID is available in the sidebar OAuth2 -> General -> Client information. Finally, select the server where you want your bot to appear.
 
 ```sh
 https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID_HERE&permissions=0&scope=bot%20applications.commands
 ```
 **Setting up the bot and installation**
-1. Make sure to have [Node.js](https://nodejs.org/en/) 16.9.0 or newer. You can check your node's version in a shell with 
+1. Make sure to have [Node.js](https://nodejs.org/en/) 16.9.0 or newer. You can check your node's version in a prompt with 
 ```sh
 node -v
 ```
-2. Clone the repo
+2. Clone this repo
 ```sh
 git clone https://github.com/vanhuyph/QuizoBot_Discord.git
 ```
@@ -46,16 +59,14 @@ npm install
 ```sh
 npm run dbInit
 ```
-6. Lastly, start the project
+6. Lastly, start the app
 ```sh
 npm start
 ```
-*In case you want to reset the local DB*
-```sh
-npm run forceInitdb
-```
+> **Note:**
+> In case you want to reset the local DB use `npm run forceInitdb`.
 
-## Commands available
+## Commands available :game_die:
 * `/category` Sends you the categories list.
 * `/help` Displays a select menu listing out the QuizoBot's commands with their use.
 * `/lb` Shows the top 10 users with the most points in the server.
@@ -63,7 +74,7 @@ npm run forceInitdb
 * `/setup <category> <type> <difficulty>` Starts a game with your provided configuration.
 
 ## Reused code source links :sparkling_heart:
-Path of the file where the reused code is located  | Author of the reused source code | URL where reused code is available | Reason for the reuse of the code
+Path of the file where the reused code is located  | Author of the reused source code | URL where the reused code is available | Reason for the reuse of the code
 ------------- | ------------- | ------------- | -------------
 `src/database/dbInit.js`  | renovate[bot]  | [Here](https://sequelize.org/docs/v6/getting-started/)  | Connecting to the DB.
 `src/deploy-commands.js`  | Official discord.js Guide  | [Here](https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands)  | Register and update the slash commands for the bot application.
