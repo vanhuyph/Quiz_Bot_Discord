@@ -9,15 +9,13 @@
 <h4 align="center">
   A Discord trivia bot with over 4,000 questions and multiple commands available. Built with <a href="https://nodejs.org/en/">Node.js</a>.
 </h4>
-<br>
 
 # Discord QuizoBot :robot:
 QuizoBot is a Discord bot bringing to your server a fun multiplayer quiz game. You have the option of playing by yourself but you can also play with the other members of your Discord server and grind the ranks thanks to the leaderboard implemented by the bot.
 
 With the help of [OpenTDB](https://opentdb.com/), QuizoBot provides you over 4,000 questions and 24 different categories for endless games.
 
-## Architecture type
-TODO
+The project is based on an event-driven architecture.
 
 ## Contents
 * [How to install](#how-to-install-computer)
@@ -135,5 +133,4 @@ Path of the file where the reused code is located  | Author of the reused source
     </td>
   </tr>
 </table>
-<br>
 <p align="right"><a href="#contents">Back to top</a></p>
