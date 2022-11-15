@@ -66,6 +66,7 @@ npm start
 
 ## Commands available :game_die:
 * `/category` Sends you the categories list.
+* `/changescore <user> <points> (admin only)` Changes the user score.
 * `/help` Displays a select menu listing out the QuizoBot's commands with their use.
 * `/lb` Shows the top 10 users with the most points in the server.
 * `/play` Starts a multiple choice game with 5 rounds.
@@ -74,11 +75,11 @@ npm start
 ## Reused code source links :sparkling_heart:
 Path of the file where the reused code is located  | Author of the reused source code | URL where the reused code is available | Reason for the reuse of the code
 ------------- | ------------- | ------------- | -------------
-`src/database/dbInit.js`  | renovate[bot]  | [Here](https://sequelize.org/docs/v6/getting-started/)  | Connecting to the DB.
+`src/database/dbInit.js`  | renovate[bot]  | [Here](https://sequelize.org/docs/v6/getting-started/)  | Connect to the DB.
 `src/deploy-commands.js`  | Official discord.js Guide  | [Here](https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands)  | Register and update the slash commands for the bot application.
 `src/events/handlers/interactionCreateHandler.js`  | Official discord.js Guide  | [Here](https://discordjs.guide/creating-your-bot/command-handling.html#executing-commands)  | Get the information of the matching command dynamically and call its execute method
-`src/utils/helperFunctions.js`  | Jeff  | [Here](https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array)  | Shuffling an array using the modern version of the Fisher–Yates algorithm.
-`src/utils/loadCommands.js`  | Official discord.js Guide  | [Here](https://discordjs.guide/creating-your-bot/command-handling.html#loading-command-files)  | Retrieve our command files dynamically in the commands folder, to load them on the bot startup.
+`src/utils/helperFunctions.js`  | Jeff  | [Here](https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array)  | Shuffle an array using the modern version of the Fisher–Yates algorithm.
+`src/utils/loadCommands.js`  | Official discord.js Guide  | [Here](https://discordjs.guide/creating-your-bot/command-handling.html#loading-command-files)  | Retrieve command files dynamically in the commands folder, to load them on the bot startup.
 
 ## Contributors :star2:
 <table>
