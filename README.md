@@ -44,7 +44,7 @@ node -v
 ```sh
 git clone https://github.com/vanhuyph/QuizoBot_Discord.git
 ```
-3. Replace the values in the `.env.example` with your bot's token and client ID from earlier
+3. Replace the values in the `.env.example` file with your bot's token and client ID from earlier and remove the `.example`
 ```sh
 TOKEN='YOUR_BOT_TOKEN_HERE'
 CLIENT_ID='YOUR_CLIENT_ID_HERE'
@@ -65,12 +65,14 @@ npm start
 > In case you want to reset the local DB use `npm run forceInitdb`.
 
 ## Commands available :game_die:
-* `/category` Sends you the categories list.
-* `/changescore <user> <points> (admin only)` Changes the user score.
-* `/help` Displays a select menu listing out the QuizoBot's commands with their use.
+* `/category` Sends you the categories list available.
+* `/change_score user_info <target> (admin only)` Displays the target score points.
+* `/change_score user_points <target> <points> (admin only)` Changes the target score points.
+* `/help` Displays a select menu listing out the QuizoBot's commands with their uses.
 * `/lb` Shows the top 10 users with the most points in the server.
 * `/play` Starts a multiple choice game with 5 rounds.
 * `/setup <category> <type> <difficulty>` Starts a game with your provided configuration.
+*  `/score` Displays your personnal score points.
 
 ## Reused code source links :sparkling_heart:
 Path of the file where the reused code is located  | Author of the reused source code | URL where the reused code is available | Reason for the reuse of the code
