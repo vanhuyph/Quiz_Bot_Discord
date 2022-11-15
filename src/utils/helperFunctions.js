@@ -24,22 +24,29 @@ const categoriesCollection = async () => {
 
 /**
  * Add score to the user or create the user if he's not present in the db
- * @param {*} userID the user's ID to add score
+ * @param {*} userObj the user object containing the id and username
  * @param {*} scoreAmount amount of points to give
  * @returns the user with the score updated or a new user if
  * he wasn't present in the db beforehand
  */
 async function addScore(userObj, scoreAmount) {
-    const user = await Users.findOne({ where: { user_id: userObj.userID } });
+    const user = await Users.findOne({ where: { user_id: userObj.id } });
 
     if (user) {
         user.score += Number(scoreAmount);
+        if (user.score < 0) {
+            user.score = 0;
+        }
         return user.save();
     }
 
-    const newUser = await Users.create({ user_id: userObj.userID, username: userObj.username, score: scoreAmount });
+    const newUser = await Users.build({ user_id: userObj.id, username: userObj.username, score: scoreAmount });
 
-    return newUser;
+    if (newUser.score < 0) {
+        newUser.score = 0;
+    }
+
+    return newUser.save();
 }
 
 /**
@@ -57,7 +64,7 @@ async function getAllUsers() {
  * @param {*} userID the user's ID to display points
  * @returns the points of the user or 0
  */
- async function displayScore(userID) {
+async function displayScore(userID) {
     const user = await Users.findOne({ where: { user_id: userID } });
 
     if (user) {

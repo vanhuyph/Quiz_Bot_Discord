@@ -8,19 +8,19 @@ module.exports = {
     async execute(interaction) {
         const usersFromDB = await getAllUsers();
         let members = [];
-
         const embedMsg = new EmbedBuilder().setTitle('🏆 Top 10 leaderboard 🏆').setColor('#FF47CA');
-        if (usersFromDB.length === 0) {
-            embedMsg.setDescription('Nobody is ranked yet... Be the first one to score points!');
-            return await interaction.reply({ embeds: [embedMsg], ephemeral: true });
-        }
 
         for (let obj of usersFromDB) {
-            // If we find a user with the same ID in the discord server cache as the one in the DB,
-            // add it to the members array
-            if (interaction.guild.members.cache.map((member) => member.id).includes(obj.user_id)) {
+            // If we find a user with the same ID in the discord server cache as the one in the DB
+            // and his score points is > 0 (for rankings purpose), add it to the members array
+            if (interaction.guild.members.cache.map((member) => member.id).includes(obj.user_id) && obj.score > 0) {
                 members.push(obj);
             }
+        }
+        
+        if (members.length === 0) {
+            embedMsg.setDescription('Nobody is ranked yet... Be the first one to score points!');
+            return await interaction.reply({ embeds: [embedMsg], ephemeral: true });
         }
 
         // Sorting the members by their scores DESC
@@ -46,12 +46,14 @@ module.exports = {
         for (let i = 0; i < members.length; i++) {
             // Getting the user object that has been cached in the server by his ID
             let user = interaction.client.users.cache.get(members[i].user_id);
-            // Mentioning the @user
-            let mentionUser = userMention(user.id);
-
             if (!user) {
                 return;
             }
+
+            // Mentioning the @user
+            let mentionUser = userMention(user.id);
+            let userScore = members[i].score;
+
             if (i + 1 === 1) {
                 usernames += `🥇 ${mentionUser}\n`;
             }
@@ -64,7 +66,7 @@ module.exports = {
             else {
                 usernames += `\`${i + 1}\` ${mentionUser}\n`;
             }
-            userPoints += `\n${members[i].score}`;
+            userPoints += `\n${userScore}`;
         }
 
         embedMsg

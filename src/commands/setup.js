@@ -158,15 +158,15 @@ module.exports = {
 
             // Start to collect the answers
             collector.on('collect', async i => {
-                // Check whether the userID property exists in the array or not and if the latter, then add it
-                const index = userAnswering.findIndex(x => x.userID === i.user.id);
+                // Check whether the user's ID property exists in the array or not and if the latter, then add it
+                const index = userAnswering.findIndex(x => x.id === i.user.id);
 
                 if (index === -1) {
-                    userAnswering.push({ userID: i.user.id, username: i.user.username, messageID: i.message.id, answerID: i.customId });
+                    userAnswering.push({ id: i.user.id, username: i.user.username, messageID: i.message.id, answerID: i.customId });
                 }
                 else {
                     // Allow to change the user's answer without modifying the whole object
-                    let newArr = userAnswering.map(u => u.userID === i.user.id ? { ...u, answerID: i.customId } : u);
+                    let newArr = userAnswering.map(u => u.id === i.user.id ? { ...u, answerID: i.customId } : u);
                     // Make a copy of newArr array using the SPREAD operator
                     userAnswering = [...newArr];
                 }
@@ -201,7 +201,7 @@ module.exports = {
                     // concatenate the string with the username + amount of points gained and call the addScore function
                     if (element.answerID === holdingAnswer) {
                         usernames += `\n${element.username}: +${scoreAmount} points`;
-                        addScore(element, scoreAmount);
+                        await addScore(element, scoreAmount);
                     }
                 }
                 usernames === '' ? usernames = '\nNobody had the correct answer!' : usernames;
