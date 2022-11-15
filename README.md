@@ -65,14 +65,14 @@ npm start
 > In case you want to reset the local DB use `npm run forceInitdb`.
 
 ## Commands available :game_die:
-* `/category` Sends you the categories list available.
-* `/change_score user_info <target> (admin only)` Displays the target score points.
-* `/change_score user_points <target> <points> (admin only)` Changes the target score points.
-* `/help` Displays a select menu listing out the QuizoBot's commands with their uses.
-* `/lb` Shows the top 10 users with the most points in the server.
-* `/play` Starts a multiple choice game with 5 rounds.
-* `/setup <category> <type> <difficulty>` Starts a game with your provided configuration.
-*  `/score` Displays your personnal score points.
+* `/category` Send you the categories list available.
+* `/change_score user_info <target> (admin only)` Display the target score points.
+* `/change_score user_points <target> <points> (admin only)` Change the target score points.
+* `/help` Display a select menu listing out the QuizoBot's commands with their uses.
+* `/lb` Show the top 10 users with the most points in the server.
+* `/play` Start a multiple choice game with 5 rounds.
+* `/score` Display your personnal score points.
+* `/setup <category> <type> <difficulty>` Start a game with your provided configuration.
 
 ## Reused code source links :sparkling_heart:
 Path of the file where the reused code is located  | Author of the reused source code | URL where the reused code is available | Reason for the reuse of the code

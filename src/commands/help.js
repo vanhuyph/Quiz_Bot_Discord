@@ -12,22 +12,22 @@ module.exports = {
 					.setPlaceholder('Nothing selected')
 					.addOptions([
 						{
-							label: 'Play command',
-							description: 'All information about the play command',
-							value: 'play',
-							emoji: '🎲'
-						},
-						{
-							label: 'Setup command',
-							description: 'All information about the setup command',
-							value: 'setup',
-							emoji: '⚙️'
-						},
-						{
 							label: 'Category command',
 							description: 'All information about the category command',
 							value: 'category',
 							emoji: '📃'
+						},
+						{
+							label: 'Leaderboard command',
+							description: 'All information about the leaderboard command',
+							value: 'leaderboard',
+							emoji: '🏆'
+						},
+						{
+							label: 'Play command',
+							description: 'All information about the play command',
+							value: 'play',
+							emoji: '🎲'
 						},
 						{
 							label: 'Score command',
@@ -36,10 +36,10 @@ module.exports = {
 							emoji: '🎮'
 						},
 						{
-							label: 'Leaderboard command',
-							description: 'All information about the leaderboard command',
-							value: 'leaderboard',
-							emoji: '🏆'
+							label: 'Setup command',
+							description: 'All information about the setup command',
+							value: 'setup',
+							emoji: '⚙️'
 						},
 					]),
 			);
@@ -61,24 +61,24 @@ module.exports = {
 			// Set a different description based on the user selected choice
 			// and send a followUp to the interaction
 			switch (selected) {
-				case 'play':
-					msgEmbed.setDescription('You can start a multiple choice quiz game of 5 rounds with \`/play\`.');
-					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
-					break;
-				case 'setup':
-					msgEmbed.setDescription('You can customize a game with \`/setup\`.\nThe config options are: \n▫Category\n▫️Type\n ▫️Difficulty');
-					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
-					break;
 				case 'category':
 					msgEmbed.setDescription('Show the quiz categories list with \`/categories\`.');
+					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
+					break;
+				case 'leaderboard':
+					msgEmbed.setDescription('Display the top 10 users with the most points in the server with \`/lb\`.');
+					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
+					break;
+				case 'play':
+					msgEmbed.setDescription('You can start a multiple choice quiz game of 5 rounds with \`/play\`.');
 					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
 					break;
 				case 'score':
 					msgEmbed.setDescription('Display your score points with \`/score\`.');
 					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
 					break;
-				case 'leaderboard':
-					msgEmbed.setDescription('Display the top 10 leaderboard with \`/lb\`.');
+				case 'setup':
+					msgEmbed.setDescription('You can customize a game with \`/setup\`.\nThe config options are: \n▫Category\n▫️Type\n ▫️Difficulty');
 					await interaction.followUp({ embeds: [msgEmbed], ephemeral: true });
 					break;
 				default:
