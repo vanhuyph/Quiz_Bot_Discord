@@ -67,7 +67,7 @@ npm start
 ## Commands available :game_die:
 * `/category` Send you the categories list available.
 * `/change_score user_info <target> (admin only)` Display the target score points.
-* `/change_score user_points <target> <points> (admin only)` Change the target score points.
+* `/change_score user_points <target> <points> (admin only)` Change the target score by adding or removing points.
 * `/help` Display a select menu listing out the QuizoBot's commands with their uses.
 * `/lb` Show the top 10 users with the most points in the server.
 * `/play` Start a multiple choice game with 5 rounds.
