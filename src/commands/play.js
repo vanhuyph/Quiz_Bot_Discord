@@ -33,7 +33,6 @@ module.exports = {
             //     incorrect_answers: [ 'Beyond Good and Evil', 'The Republic', 'Meditations' ]
             //  }
             const results = data[i];
-            console.log(results);
             const question = entities.decodeHTML(results.question);
             const correctAnswer = entities.decodeHTML(results.correct_answer);
             const category = entities.decodeHTML(results.category);
@@ -47,7 +46,7 @@ module.exports = {
 
             // We shuffle the array so the answer will not be always the first one
             shuffle(choices);
-            console.log(correctAnswer);
+            console.log('Correct response: ' + correctAnswer);
 
             // Construct an embed with all the questions data
             const embedQuestion = new EmbedBuilder().setTitle(`Question ${i + 1}:\n${question}`)
@@ -143,7 +142,6 @@ module.exports = {
 
             // Will be executed when the collector completes
             collector.on('end', async collected => {
-                console.log(`Collected ${collected.size} interactions.`);
                 // Slicing the string to only get the letter (A, B, C or D)
                 const answerLetter = holdingAnswer.slice(7);
                 // If no interactions collected, send the didn't answer embed message

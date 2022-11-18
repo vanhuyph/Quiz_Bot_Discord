@@ -67,13 +67,12 @@ module.exports = {
 
         for (let i = 0; i < data.length; i++) {
             const results = data[i];
-            console.log(results);
             const question = entities.decodeHTML(results.question);
             const correctAnswer = entities.decodeHTML(results.correct_answer);
             const category = entities.decodeHTML(results.category);
             const difficulty = results.difficulty;
             const type = results.type;
-
+            console.log('Correct response: ' + correctAnswer);
             // Array that will be stocking the different choices
             let choices = [];
 
@@ -183,7 +182,6 @@ module.exports = {
 
             // Will be executed when the collector completes
             collector.on('end', async collected => {
-                console.log(`Collected ${collected.size} interactions.`);
                 // Slicing the string to only get the letter (A, B, C or D)
                 const answerLetter = holdingAnswer.slice(7);
                 // If no interactions collected, send the didn't answer embed message
