@@ -11,7 +11,7 @@
 </h4>
 
 # Discord QuizoBot :robot:
-QuizoBot is a Discord bot bringing to your server a fun multiplayer quiz game. You have the option of playing by yourself but you can also play with the other members of your Discord server and grind the ranks thanks to the leaderboard implemented by the bot.
+QuizoBot is a Discord bot bringing to your server a fun multiplayer quiz game. You have the option of playing by yourself but you can also play with the other members of your Discord server and grind the ranks thanks to the integrated leaderboard.
 
 With the help of [OpenTDB](https://opentdb.com/), QuizoBot provides you over 4,000 questions and 24 different categories for endless games.
 
@@ -62,7 +62,7 @@ npm run dbInit
 npm start
 ```
 > **Note:**
-> In case you want to reset the local DB use `npm run forceInitdb`.
+> In case you want to reset the local DB, use `npm run forceInitdb`.
 
 ## Commands available :game_die:
 * `/category` Send you the categories list available.
@@ -71,7 +71,7 @@ npm start
 * `/help` Display a select menu listing out the QuizoBot's commands with their uses.
 * `/lb` Show the top 10 users with the most points in the server.
 * `/play` Start a multiple choice game with 5 rounds.
-* `/score` Display your personnal score points.
+* `/score` Display your personnal score points (it's kept between different servers).
 * `/setup <category> <type> <difficulty>` Start a game with your provided configuration.
 
 ## Reused code source links :sparkling_heart:
