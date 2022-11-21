@@ -17,6 +17,8 @@ With the help of [OpenTDB](https://opentdb.com/), QuizoBot provides you over 4,0
 
 The project is based on an event-driven architecture.
 
+[Invite QuizoBot to a server.](https://discord.com/api/oauth2/authorize?client_id=1031971815284809839&permissions=223296&scope=bot%20applications.commands)
+
 ## Contents
 * [How to install](#how-to-install-computer)
 * [Commands availabe](#commands-available-game_die)
