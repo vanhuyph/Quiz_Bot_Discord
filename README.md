@@ -29,8 +29,7 @@ The project is based on an event-driven architecture.
 2. Provide a name to your bot and click on the "Create" button.
 3. On the left sidebar, click on "Bot" and then click on the "Add Bot" button on the right.
 4. Now, you'll need your bot's password. Under "Token", press on the "Reset Token" button, copy your token and then keep it somewhere safe. Don't worry, if you lose your bot's token you'll still have the ability to reset your token again which will invalidate the previous one.
-5. On the same page, under the "Privileged Gateway Intents" section, enable the "MESSAGE CONTENT INTENT" option. It'll be needed when running the bot.
-6. Grab the link below and paste it into your browser while replacing "YOUR_CLIENT_ID_HERE" with yours. Your client ID is available in the sidebar OAuth2 -> General -> Client information. Finally, select the server where you want your bot to appear.
+5. Grab the link below and paste it into your browser while replacing "YOUR_CLIENT_ID_HERE" with yours. Your client ID is available in the sidebar OAuth2 -> General -> Client information. Finally, select the server where you want your bot to appear.
 
 ```sh
 https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID_HERE&permissions=0&scope=bot%20applications.commands
