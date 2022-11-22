@@ -41,7 +41,7 @@ module.exports = {
         const userCategoryOption = interaction.options.getString('category').toLowerCase();
         const userTypeOption = interaction.options.getString('type');
         const userDifficultyOption = interaction.options.getString('difficulty');
-        let baseURL = 'https://opentdb.com/api.php?amount=3';
+        let baseURL = 'https://opentdb.com/api.php?amount=5';
 
         // Get the category's ID in the collection based on the user category value
         let categoryID = categories.findKey(categoryName => categoryName.toLowerCase() === userCategoryOption);

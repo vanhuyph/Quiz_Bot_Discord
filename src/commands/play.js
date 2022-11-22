@@ -16,7 +16,7 @@ module.exports = {
         // API call to get the questions data
         let data;
         try {
-            data = await (await axios('https://opentdb.com/api.php?amount=3&type=multiple')).data.results;
+            data = await (await axios('https://opentdb.com/api.php?amount=5&type=multiple')).data.results;
         } catch (error) {
             console.log(error);
             return await interaction.channel.send({ content: 'Something went wrong while trying to retrieve the questions... Please try again later!' });
