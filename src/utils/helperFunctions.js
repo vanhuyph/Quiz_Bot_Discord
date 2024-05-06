@@ -155,11 +155,11 @@ function disableButtons(buttons, correctAnswer) {
 async function getRandomGifUrl(searchQuery) {
   const apiKey = process.env.TENOR_KEY;
   const apiUrl = "https://tenor.googleapis.com/v2/search";
-  const limit = 10;
+  const limit = 15;
 
   const url = `${apiUrl}?q=${encodeURIComponent(
     searchQuery
-  )}&key=${apiKey}&limit=${limit}&random=true`;
+  )}&key=${apiKey}&limit=${limit}&random=true&media_filter=gif`;
 
   try {
     const response = await axios.get(url);
@@ -168,7 +168,28 @@ async function getRandomGifUrl(searchQuery) {
       response.data.results &&
       response.data.results.length > 0
     ) {
-      const gifUrl = response.data.results[0].media_formats.gif.url;
+      const gifUrls = response.data.results.map(
+        (result) => result.media_formats.gif.url
+      );
+
+      if (response.data.next) {
+        const nextPos = response.data.next;
+        const nextPageUrl = `${url}&pos=${nextPos}`;
+
+        const nextPageResponse = await axios.get(nextPageUrl);
+        if (
+          nextPageResponse.data &&
+          nextPageResponse.data.results &&
+          nextPageResponse.data.results.length > 0
+        ) {
+          const nextPageGifUrls = nextPageResponse.data.results.map(
+            (result) => result.media_formats.gif.url
+          );
+          gifUrls.push(...nextPageGifUrls);
+        }
+      }
+
+      gifUrl = shuffleArrayAndGetOneElement(gifUrls);
       return gifUrl;
     } else {
       throw new Error("No GIF found");
@@ -177,6 +198,18 @@ async function getRandomGifUrl(searchQuery) {
     console.error("Error fetching GIF:", error);
     throw error;
   }
+}
+
+function shuffleArrayAndGetOneElement(array) {
+  // Shuffle the array using the Fisher-Yates algorithm
+  for (let i = array.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+  }
+
+  // Return a random element from the shuffled array
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
 }
 
 module.exports = {
@@ -188,4 +221,5 @@ module.exports = {
   buildButtons,
   disableButtons,
   getRandomGifUrl,
+  shuffleArrayAndGetOneElement,
 };

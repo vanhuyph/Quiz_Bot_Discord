@@ -1,5 +1,8 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { getRandomGifUrl } = require("../utils/helperFunctions.js");
+const {
+  getRandomGifUrl,
+  shuffleArrayAndGetOneElement,
+} = require("../utils/helperFunctions.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,8 +18,16 @@ module.exports = {
     try {
       await interaction.deferReply();
 
+      const query = [
+        "did i ask",
+        "who asked",
+        "but no one asked",
+        "didn't ask + ratio",
+      ];
+      const randomQuery = shuffleArrayAndGetOneElement(query);
+
       const user = interaction.options.getUser("member");
-      const gifUrl = await getRandomGifUrl("who asked");
+      const gifUrl = await getRandomGifUrl(randomQuery);
 
       await interaction.editReply({ content: `${user}`, files: [gifUrl] });
     } catch (error) {
