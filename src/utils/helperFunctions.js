@@ -212,6 +212,14 @@ function shuffleArrayAndGetOneElement(array) {
   return array[randomIndex];
 }
 
+function daysRemainingBefore(date) {
+  const currentDate = new Date();
+  const timeDiff = date.getTime() - currentDate.getTime();
+  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+  return daysDiff;
+}
+
 module.exports = {
   categoriesCollection,
   addScore,
@@ -222,4 +230,5 @@ module.exports = {
   disableButtons,
   getRandomGifUrl,
   shuffleArrayAndGetOneElement,
+  daysRemainingBefore,
 };
