@@ -7,6 +7,7 @@ const {
 } = require("discord.js");
 const axios = require("axios");
 const { Users } = require("../database/dbObjects.js");
+const moment = require("moment-timezone");
 
 /**
  * Retrieve the category data from the API and put it in a collection
@@ -213,11 +214,9 @@ function shuffleArrayAndGetOneElement(array) {
 }
 
 function daysRemainingBefore(date) {
-  const currentDate = new Date();
-  const timeDiff = date.getTime() - currentDate.getTime();
-  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-  return daysDiff;
+  const now = moment().tz("Europe/Brussels");
+  const diffTime = date.diff(now, "days");
+  return diffTime;
 }
 
 module.exports = {

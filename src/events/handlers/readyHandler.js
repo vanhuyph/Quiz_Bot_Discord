@@ -1,11 +1,18 @@
 const { daysRemainingBefore } = require("../../utils/helperFunctions.js");
+const moment = require("moment-timezone");
 
-const targetDate = new Date("2024-09-06");
+const targetDate = moment.tz("2024-09-06", "Europe/Brussels");
 
 module.exports = (client) => {
-  remainingDays = daysRemainingBefore(targetDate);
   console.log(`${client.user.tag} has logged in!`);
-  client.user.setPresence({
-    activities: [{ name: `${remainingDays} days left`, type: 3 }],
-  });
+
+  const updatePresence = () => {
+    const remainingDays = daysRemainingBefore(targetDate);
+    client.user.setPresence({
+      activities: [{ name: `${remainingDays} days left`, type: 3 }],
+    });
+  };
+
+  updatePresence();
+  setInterval(updatePresence, 24 * 60 * 60 * 1000);
 };
