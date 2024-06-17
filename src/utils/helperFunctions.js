@@ -219,6 +219,12 @@ function daysRemainingBefore(date) {
   return diffTime;
 }
 
+function timeUntilMidnight() {
+  const now = moment.tz("Europe/Brussels");
+  const midnight = moment.tz("Europe/Brussels").endOf("day").add(1, "second");
+  return midnight.diff(now);
+}
+
 module.exports = {
   categoriesCollection,
   addScore,
@@ -230,4 +236,5 @@ module.exports = {
   getRandomGifUrl,
   shuffleArrayAndGetOneElement,
   daysRemainingBefore,
+  timeUntilMidnight,
 };
